@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>bitcoin.icns</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Wavepay-Qt</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleExecutable</key>
+	<string>Wavepay-Qt</string>
+	<key>CFBundleIdentifier</key>
+	<string>co.wavepay.Wavepay-Qt</string>
+        <key>CFBundleURLTypes</key>
+        <array>
+          <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>co.wavepay.WavepayPayment</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+              <string>wavepay</string>
+            </array>
+          </dict>
+        </array>
+        <key>LSAppNapIsDisabled</key>
+          <string>True</string>
+</dict>
+</plist>
