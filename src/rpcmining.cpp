@@ -127,7 +127,7 @@ Value getstakinginfo(const Array& params, bool fHelp)
 
     uint64_t nWeight = 0;
     uint64_t nExpectedTime = 0;
-    uint64_t nTargetSpacingWork = 180;
+    uint64_t nTargetSpacingWork = 300;
     
     
     if (pwalletMain)
@@ -135,7 +135,7 @@ Value getstakinginfo(const Array& params, bool fHelp)
 
     uint64_t nNetworkWeight = GetPoSKernelPS();
     bool staking = nLastCoinStakeSearchInterval && nWeight;
-    nExpectedTime = staking ? (nTargetSpacingWork * nNetworkWeight / nWeight) : 0;
+    nExpectedTime = staking ? ((nWeight / (nTargetSpacingWork * nNetworkWeight)) / 100) : 0;
 
     Object obj;
 
@@ -152,22 +152,8 @@ Value getstakinginfo(const Array& params, bool fHelp)
     obj.push_back(Pair("posreward",     (float)(GetProofOfStakeReward((int64_t)NULL))/COIN));
     obj.push_back(Pair("weight", (uint64_t)nWeight));
     obj.push_back(Pair("netstakeweight", (uint64_t)nNetworkWeight));
-    if (nExpectedTime < 60)
-    {
-	obj.push_back(Pair("Expected PoS (seconds)", (uint64_t)nExpectedTime));
-    }
-    else if (nExpectedTime < 60*60)
-    {
-	obj.push_back(Pair("Expected PoS (minutes)", (uint64_t)nExpectedTime/60));
-    }
-    else if (nExpectedTime < 24*60*60)
-    {
-	obj.push_back(Pair("Expected PoS (hours)", (uint64_t)nExpectedTime/(60*60)));
-    }
-    else
-    {
-	obj.push_back(Pair("Expected PoS (days)", (uint64_t)nExpectedTime/(60*60*24)));
-    }
+	obj.push_back(Pair("Change for generate PoS (%)", (uint64_t)nExpectedTime));
+
     return obj;
 }
 
