@@ -299,7 +299,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/sendmessagesentry.h \
     src/qt/blockbrowser.h \
     src/qt/markets.h \
-    src/qt/mining.h \
+    # src/qt/mining.h \
     src/qt/poolparse.h \
     src/qt/plugins/mrichtexteditor/mrichtextedit.h \
     src/qt/qvalidatedtextedit.h \
@@ -433,7 +433,7 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/sendmessagesentry.cpp \
     src/qt/blockbrowser.cpp \
     src/qt/markets.cpp \
-    src/qt/mining.cpp \
+    # src/qt/mining.cpp \
     src/qt/poolparse.cpp \
     src/qt/qvalidatedtextedit.cpp \
     src/qt/plugins/mrichtexteditor/mrichtextedit.cpp \
@@ -483,7 +483,7 @@ FORMS += \
     src/qt/forms/sendmessagesdialog.ui \
     src/qt/forms/blockbrowser.ui \
     src/qt/forms/markets.ui \
-    src/qt/forms/mining.ui \
+    # src/qt/forms/mining.ui \
     src/qt/forms/tradingdialog.ui \
     src/qt/forms/multisigaddressentry.ui \
     src/qt/forms/multisiginputentry.ui \
