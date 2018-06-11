@@ -41,7 +41,7 @@
 #include "blockbrowser.h"
 #include "tradingdialog.h"
 #include "markets.h"
-#include "mining.h"
+// #include "mining.h"
 
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
@@ -137,7 +137,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     blockBrowser = new BlockBrowser(this);
     markets = new Markets(this);
-    mining = new Mining(this);
+    // mining = new Mining(this);
     addressBookPage = new AddressBookPage(AddressBookPage::ForEditing, AddressBookPage::SendingTab);
 
     receiveCoinsPage = new AddressBookPage(AddressBookPage::ForEditing, AddressBookPage::ReceivingTab);
@@ -165,7 +165,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralStackedWidget->addWidget(messagePage);
     centralStackedWidget->addWidget(blockBrowser);
     centralStackedWidget->addWidget(markets);
-    centralStackedWidget->addWidget(mining);
+    // centralStackedWidget->addWidget(mining);
     centralStackedWidget->addWidget(tradingDialogPage);
 
     QWidget *centralWidget = new QWidget();
@@ -393,6 +393,8 @@ void BitcoinGUI::createActions()
     whitepaperAction = new QAction(QIcon(":/icons/whitepaper"), tr("&Whitepaper Wavepay"), this);
     whitepaperAction->setToolTip(tr("Show whitepaper Wavepay"));
     // whitepaperAction->setMenuRole(QAction::WhitepaperRole);
+    downloadAction = new QAction(QIcon(":/icons/export"), tr("&Check Latest update"), this);
+    downloadAction->setToolTip(tr("Check latest update version wallet Wavepay"));
     aboutQtAction = new QAction(QIcon(":/icons/aboutqt"),tr("About &Qt"), this);
     aboutQtAction->setToolTip(tr("Show information about Qt"));
     aboutQtAction->setMenuRole(QAction::AboutQtRole);
@@ -425,6 +427,7 @@ void BitcoinGUI::createActions()
     connect(telegramAction, SIGNAL(triggered()), this, SLOT(telegramClicked()));
     connect(discordAction, SIGNAL(triggered()), this, SLOT(discordClicked()));
     connect(whitepaperAction, SIGNAL(triggered()), this, SLOT(whitepaperClicked()));
+    connect(downloadAction, SIGNAL(triggered()), this, SLOT(downloadClicked()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(optionsClicked()));
     connect(toggleHideAction, SIGNAL(triggered()), this, SLOT(toggleHidden()));
@@ -471,6 +474,9 @@ void BitcoinGUI::createMenuBar()
     media->addAction(discordAction);
     media->addSeparator();
     media->addAction(whitepaperAction);
+
+    QMenu *download = appMenuBar->addMenu(tr("&Download"));
+    download->addAction(downloadAction);
 
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(openRPCConsoleAction);
@@ -609,7 +615,7 @@ void BitcoinGUI::setWalletModel(WalletModel *walletModel)
         signVerifyMessageDialog->setModel(walletModel);
         blockBrowser->setModel(walletModel);
         markets->setModel(walletModel);
-        mining->setModel(walletModel);
+        // mining->setModel(walletModel);
         tradingDialogPage->setModel(walletModel);
         multisigPage->setModel(walletModel);
 
@@ -718,6 +724,12 @@ void BitcoinGUI::telegramClicked()
 {
 	QString tele = "https://t.me/officialwavepay";
 	QDesktopServices::openUrl(QUrl(tele));
+}
+
+void BitcoinGUI::downloadClicked()
+{
+	QString load = "https://github.com/wavepay/wavepaywallet/releases";
+	QDesktopServices::openUrl(QUrl(load));
 }
 
 void BitcoinGUI::discordClicked()
@@ -1040,14 +1052,14 @@ void BitcoinGUI::gotoMarkets()
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
 }
 
-void BitcoinGUI::gotoMining()
+/* void BitcoinGUI::gotoMining()
 {
     miningAction->setChecked(true);
     centralStackedWidget->setCurrentWidget(mining);
 
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
-}
+} */
 
 void BitcoinGUI::gotoOverviewPage()
 {
@@ -1332,34 +1344,20 @@ void BitcoinGUI::updateStakingIcon()
     {
         uint64_t nWeight = this->nWeight;
         uint64_t nNetworkWeight = GetPoSKernelPS();
-	uint64_t ntarget = GetTargetSpacingWork(pindexBest->nHeight);
+	uint64_t ntarget = 5 * 60;
         unsigned nEstimateTime = 0;
 
-        nEstimateTime = ntarget * nNetworkWeight / nWeight;
+        nEstimateTime = (nWeight / (ntarget * nNetworkWeight)) / 100;
 
         QString text;
-        if (nEstimateTime < 60)
-        {
-            text = tr("%n second(s)", "", nEstimateTime);
-        }
-        else if (nEstimateTime < 60*60)
-        {
-            text = tr("%n minute(s)", "", nEstimateTime/60);
-        }
-        else if (nEstimateTime < 24*60*60)
-        {
-            text = tr("%n hour(s)", "", nEstimateTime/(60*60));
-        }
-        else
-        {
-            text = tr("%n day(s)", "", nEstimateTime/(60*60*24));
-        }
+
+            text = tr("%n (%)", "", nEstimateTime);
 
         nWeight /= COIN;
         nNetworkWeight /= COIN;
 
         labelStakingIcon->setPixmap(QIcon(fUseBlackTheme ? ":/icons/black/staking_on" : ":/icons/staking_on").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-        labelStakingIcon->setToolTip(tr("Staking.<br>Your weight is %1<br>Network weight is %2<br>Expected time to earn reward is %3").arg(nWeight).arg(nNetworkWeight).arg(text));
+        labelStakingIcon->setToolTip(tr("Staking.<br>Your weight is %1<br>Network weight is %2<br>Change for generate PoS: %3").arg(nWeight).arg(nNetworkWeight).arg(text));
     }
     else
     {

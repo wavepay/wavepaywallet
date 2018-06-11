@@ -23,7 +23,7 @@ class MessageModel;
 class BlockBrowser;
 class tradingDialog;
 class Markets;
-class Mining;
+// class Mining;
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -86,7 +86,7 @@ private:
     QLabel* netLabel;
     BlockBrowser *blockBrowser;
     Markets *markets;
-    Mining *mining;
+    // Mining *mining;
     tradingDialog   *tradingDialogPage;
     QLabel *labelEncryptionIcon;
     QLabel *labelStakingIcon;
@@ -111,6 +111,7 @@ private:
     QAction *telegramAction;
     QAction *discordAction;
     QAction *whitepaperAction;
+    QAction *downloadAction;
     QAction *receiveCoinsAction;
     QAction *optionsAction;
     QAction *toggleHideAction;
@@ -126,7 +127,7 @@ private:
     QAction *messageAction;
     QAction *blockAction;
     QAction *marketsAction;
-    QAction *miningAction;
+    // QAction *miningAction;
     QAction *TradingAction;
     QAction *showBackupsAction;
 
@@ -204,7 +205,7 @@ private slots:
     /** Switch to markets*/
     void gotoMarkets();
     /** Switch to mining*/
-    void gotoMining();
+    // void gotoMining();
     /** Switch to masternode manager page*/
     void gotoMasternodeManagerPage();
     /** Show Sign/Verify Message dialog and switch to sign message tab */
@@ -227,6 +228,8 @@ private slots:
     void discordClicked();
     /** Show whitepaper dialog */
     void whitepaperClicked();
+    /** Show download dialog */
+    void downloadClicked();
 #ifndef Q_OS_MAC
     /** Handle tray icon clicked */
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);

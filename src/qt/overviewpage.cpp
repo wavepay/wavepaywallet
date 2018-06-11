@@ -177,6 +177,7 @@ OverviewPage::OverviewPage(QWidget *parent) :
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
 	networkManager = new QNetworkAccessManager(this);
+	m_netwManager = new QNetworkAccessManager(this);
     if (fUseBlackTheme)
     {
         const char* whiteLabelQSS = "QLabel { color: rgb(255,255,255); }";
@@ -198,6 +199,22 @@ OverviewPage::~OverviewPage()
 {
     if(!fLiteMode && !fMasterNode) disconnect(timer, SIGNAL(timeout()), this, SLOT(darkSendStatus()));
     delete ui;
+}
+
+void OverviewPage::netwManagerFinished(QNetworkReply *reply)
+{
+if (reply->error() == QNetworkReply::NoError) {
+QByteArray pngData = reply->readAll();
+QPixmap pixmap;
+//pixmap = QPixmap(430,270);
+pixmap.loadFromData(pngData);
+int w = ui->wavepaylogo->width();
+int h = ui->wavepaylogo->height();
+QPixmap newPixmap = pixmap.scaled(w,h,  Qt::KeepAspectRatio);
+ui->wavepaylogo->setPixmap(newPixmap);
+}
+else { }
+
 }
 
 void OverviewPage::setBalance(const CAmount& balance, const CAmount& stake, const CAmount& unconfirmedBalance, const CAmount& immatureBalance, const CAmount& anonymizedBalance, const CAmount& watchOnlyBalance, const CAmount& watchOnlyStake, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance)
@@ -243,8 +260,25 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& stake, cons
     }
 
 	    // create custom temporary event loop on stack
-    QEventLoop eventLoop_;
+    QEventLoop Loop_;
 
+QNetworkAccessManager m_netwManager;
+    QObject::connect(&m_netwManager, SIGNAL(finished(QNetworkReply*)), &Loop_, SLOT(quit()));
+
+QUrl url("http://wavepay.org/ann.jpg");
+QNetworkRequest request(url);
+QNetworkReply *reply_ =m_netwManager.get(request);
+    Loop_.exec(); // blocks stack until "finished()" has been called
+if (reply_->error() == QNetworkReply::NoError) {
+QByteArray pngData = reply_->readAll();
+QPixmap pixmap;
+pixmap.loadFromData(pngData);
+ui->wavepaylogo->setPixmap(pixmap);
+}
+else { }
+
+	    // create custom temporary event loop on stack
+    QEventLoop eventLoop_;
     // "quit()" the event-loop, when the network request "finished()"
     QNetworkAccessManager mgr_;
     QObject::connect(&mgr_, SIGNAL(finished(QNetworkReply*)), &eventLoop_, SLOT(quit()));
