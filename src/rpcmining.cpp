@@ -691,7 +691,8 @@ Value getblocktemplate(const Array& params, bool fHelp)
         result.push_back(Pair("payee", ""));
         result.push_back(Pair("payee_amount", ""));
     }
-
+    result.push_back(Pair("masternode_payments", pblock->nTime > 1529028000));
+    result.push_back(Pair("enforce_masternode_payments", true));
     return result;
 }
 
