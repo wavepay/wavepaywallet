@@ -2440,7 +2440,7 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, int64_t> >& vecSend, 
                     } else if (coin_type == ONLY_NOT10000IFMN) {
                         strFailReason = _(" Unable to locate enough Darksend non-denominated funds for this transaction.");
                     } else if (coin_type == ONLY_NONDENOMINATED_NOT10000IFMN ) {
-                        strFailReason = _(" Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 20000 WVP.");
+                        strFailReason = _(" Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 50000 WVP.");
                     } else {
                         strFailReason = _(" Unable to locate enough Darksend denominated funds for this transaction.");
                         strFailReason += _(" Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.");
@@ -3326,8 +3326,8 @@ uint64_t CWallet::GetStakeWeight() const
 
     if (nBalance <= nReserveBalance)
         return 0;
-    if (nBalance - nReserveBalance <= 999)
-        return 0;
+    //if (nBalance - nReserveBalance <= 999)
+     //   return 0;
 
     vector<const CWalletTx*> vwtxPrev;
 
@@ -3377,8 +3377,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     if (nBalance <= nReserveBalance)
         return false;
 
-    if (nBalance - nReserveBalance <= 999)
-        return false;
+    //if (nBalance - nReserveBalance <= 999)
+     //   return false;
 
     vector<const CWalletTx*> vwtxPrev;
 

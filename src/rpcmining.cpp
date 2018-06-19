@@ -125,17 +125,17 @@ Value getstakinginfo(const Array& params, bool fHelp)
             "getstakinginfo\n"
             "Returns an object containing staking-related information.");
 
-    uint64_t nWeight = 0;
-    uint64_t nExpectedTime = 0;
-    uint64_t nTargetSpacingWork = 300;
+    double nWeight = 0;
+    double nExpectedTime = 0;
+    uint64_t nTargetSpacingWork = 180;
     
     
     if (pwalletMain)
         nWeight = pwalletMain->GetStakeWeight();
 
-    uint64_t nNetworkWeight = GetPoSKernelPS();
+    double nNetworkWeight = GetPoSKernelPS();
     bool staking = nLastCoinStakeSearchInterval && nWeight;
-    nExpectedTime = staking ? ((nWeight / (nTargetSpacingWork * nNetworkWeight)) / 100) : 0;
+    nExpectedTime = staking ? ((nWeight / (180 * nNetworkWeight)) / 100) : 0;
 
     Object obj;
 
@@ -150,9 +150,9 @@ Value getstakinginfo(const Array& params, bool fHelp)
     obj.push_back(Pair("difficulty", GetDifficulty(GetLastBlockIndex(pindexBest, true))));
     obj.push_back(Pair("search-interval", (int)nLastCoinStakeSearchInterval));
     obj.push_back(Pair("posreward",     (float)(GetProofOfStakeReward((int64_t)NULL))/COIN));
-    obj.push_back(Pair("weight", (uint64_t)nWeight));
-    obj.push_back(Pair("netstakeweight", (uint64_t)nNetworkWeight));
-	obj.push_back(Pair("Change for generate PoS (%)", (uint64_t)nExpectedTime));
+    obj.push_back(Pair("weight", (double)nWeight));
+    obj.push_back(Pair("netstakeweight", (double)nNetworkWeight));
+	obj.push_back(Pair("Change for generate PoS (%)", (double)nExpectedTime));
 
     return obj;
 }
@@ -544,7 +544,7 @@ Value getblocktemplate(const Array& params, bool fHelp)
             "  \"payee\" : \"xxx\",                (string) required payee for the next block\n"
             "  \"payee_amount\" : n,               (numeric) required amount to pay\n"
             "  \"masternode_payments\" : true|false,         (boolean) true, if masternode payments are enabled\n"
-            "  \"enforce_masternode_payments\" : true|false  (boolean) true, if masternode payments are enforced\n"		    
+"  \"enforce_masternode_payments\" : true|false  (boolean) true, if masternode payments are enforced\n"
             "See https://en.bitcoin.it/wiki/BIP_0022 for full specification.");
 
     std::string strMode = "template";
@@ -696,7 +696,7 @@ Value getblocktemplate(const Array& params, bool fHelp)
         result.push_back(Pair("payee_amount", ""));
     }
     result.push_back(Pair("masternode_payments", pblock->nTime > 1529028000));
-    result.push_back(Pair("enforce_masternode_payments", true));
+result.push_back(Pair("enforce_masternode_payments", true));
     return result;
 }
 

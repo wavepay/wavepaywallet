@@ -46,6 +46,7 @@ map<uint256, CBlockIndex*> mapBlockIndex;
 set<pair<COutPoint, unsigned int> > setStakeSeen;
 
 CBigNum bnProofOfStakeLimit(~uint256(0) >> 36);
+// CBigNum bnProofOfStakeLimitV2(~uint256(0) >> 24);
 
 unsigned int nStakeMinAge = 24 * 60 * 60; // 24 hours
 unsigned int nStakeMaxAge = 360 * 24 * 60 * 60; // 1 year.
@@ -1354,7 +1355,8 @@ void static PruneOrphanBlocks()
 
 static CBigNum GetProofOfStakeLimit(int nHeight)
 {
-        return bnProofOfStakeLimit;
+          return bnProofOfStakeLimit;
+
 }
 
 
@@ -1422,10 +1424,15 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
     if (fProofOfStake) {
 
         CBigNum bnTargetLimit = GetProofOfStakeLimit(pindexLast->nHeight);
-
-        int64_t nTargetSpacing = 5 * 60;
-        int64_t nTargetTimespan = 5 * 60;
-
+        int64_t nTargetSpacing;
+        int64_t nTargetTimespan;
+        if (pindexLast->nHeight <= 7000) {
+         nTargetSpacing = 5 * 60;
+         nTargetTimespan = 5 * 60;
+	} else {
+         nTargetSpacing = 3 * 60;
+         nTargetTimespan = 3 * 60;	
+	}
         int64_t nActualSpacing = 0;
         if (pindexLast->nHeight != 0)
             nActualSpacing = pindexLast->GetBlockTime() - pindexLast->pprev->GetBlockTime();
@@ -3016,7 +3023,7 @@ bool CBlock::SignBlock(CWallet& wallet, int64_t nFees)
 
     if (nSearchTime > nLastCoinStakeSearchTime)
     {
-        int64_t nSearchInterval = nSearchTime-nLastCoinStakeSearchTime;
+        int64_t nSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
         if (wallet.CreateCoinStake(wallet, nBits, nSearchInterval, nFees, txCoinStake, key))
         {
             if (txCoinStake.nTime >= pindexBest->GetPastTimeLimit()+1)
