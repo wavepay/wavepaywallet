@@ -43,7 +43,7 @@ Masternode Start: Friday, June 8, 2018 2:00:00 AM GMT
 
 Masternode Collateral: 50000 WVP 
 
-Masternode Rewards: 50% of POW & POS Rewards 
+Masternode Rewards: 50% of POS Rewards 
 
 PoS start after block: 5000
 
@@ -61,7 +61,7 @@ PoS Reward:
  Reward: 1 WVP 
 
 Masternode Rewards: 
-50% of PoW & PoS Reward 
+50% of PoS Reward 
 
 ### Links
 
@@ -76,9 +76,11 @@ Discord:  https://discord.gg/vJZRsHK
 Forum: https://bitcointalk.org/index.php?topic=4416207.0
 
 ### Release Note
-Version 1.1.0.0 : release 
+Version 1.1.0.0 : Release 
 
-Version 1.1.1.6 : add ann and download features on wallet 
+Version 1.1.1.6 : Add ann and download features on wallet 
+
+Version 1.1.2.8 : Fix proof of stake
 
 ### License
 
