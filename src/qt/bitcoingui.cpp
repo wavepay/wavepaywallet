@@ -1340,24 +1340,24 @@ void BitcoinGUI::updateStakingIcon()
 {
     updateWeight();
 
-    if (nLastCoinStakeSearchInterval && nWeight >= 10)
+    if (nLastCoinStakeSearchInterval && nWeight)
     {
-        uint64_t nWeight = this->nWeight;
-        uint64_t nNetworkWeight = GetPoSKernelPS();
-	uint64_t ntarget = 5 * 60;
-        unsigned nEstimateTime = 0;
-
-        nEstimateTime = (nWeight / (ntarget * nNetworkWeight)) / 100;
-
-        QString text;
-
-            text = tr("%n (%)", "", nEstimateTime);
-
+        double nWeight = this->nWeight;
+        double nNetworkWeight = GetPoSKernelPS();
+	uint64_t ntarget = 3 * 60;
+        double nEstimatePersen = 0;
         nWeight /= COIN;
         nNetworkWeight /= COIN;
+        nEstimatePersen = (nWeight / (180 * nNetworkWeight)) / 100;
+
+       // QString text;
+
+         //   text = tr("%d (%)", "", nEstimatePersen);
+
+
 
         labelStakingIcon->setPixmap(QIcon(fUseBlackTheme ? ":/icons/black/staking_on" : ":/icons/staking_on").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-        labelStakingIcon->setToolTip(tr("Staking.<br>Your weight is %1<br>Network weight is %2<br>Change for generate PoS: %3").arg(nWeight).arg(nNetworkWeight).arg(text));
+        labelStakingIcon->setToolTip(tr("Staking.<br>Your weight is %1<br>Network weight is %2<br>Change for generate PoS (%): %3").arg(nWeight).arg(nNetworkWeight).arg(nEstimatePersen));
     }
     else
     {
@@ -1368,10 +1368,8 @@ void BitcoinGUI::updateStakingIcon()
             labelStakingIcon->setToolTip(tr("Not staking because wallet is offline"));
         else if (IsInitialBlockDownload())
             labelStakingIcon->setToolTip(tr("Not staking because wallet is syncing"));
-        else if (nWeight < 10)
-            labelStakingIcon->setToolTip(tr("Not staking req 10 mature coins"));
         else if (!nWeight)
-            labelStakingIcon->setToolTip(tr("Not staking because you don't have mature coins"));
+            labelStakingIcon->setToolTip(tr("Not staking because you don't have mature coins confirmation 720 "));
         else
             labelStakingIcon->setToolTip(tr("Not staking"));
     }
