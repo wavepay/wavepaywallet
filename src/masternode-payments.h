@@ -101,8 +101,9 @@ public:
 
     bool GetBlockPayee(int nBlockHeight, CScript& payee, CTxIn& vin);
     bool GetBlockPayee_(int nBlockHeight, CScript& payee);
+	bool SelectMasternodePayee(CScript &payee);
 };
 
-bool SelectMasternodePayee(CScript &payeeScript);
+
 
 #endif

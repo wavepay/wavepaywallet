@@ -392,16 +392,16 @@ bool MasternodePaymentsEnabled()
     return result;
 }
 
-bool SelectMasternodePayee(CScript &payeeScript)
+bool CMasternodePayments::SelectMasternodePayee(CScript &payee)
 {
     bool result = false;
     
     if (MasternodePaymentsEnabled()) {
         //spork
-        if (!masternodePayments.GetBlockPayee_(pindexBest->nHeight+1, payeeScript)) {
+        if (!masternodePayments.GetBlockPayee_(pindexBest->nHeight+1, payee)) {
             CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
             if (winningNode) {
-                payeeScript = GetScriptForDestination(winningNode->pubkey.GetID());
+                payee = GetScriptForDestination(winningNode->pubkey.GetID());
                 result = true;
             } else {
                 LogPrintf("%s: Failed to detect masternode to pay\n", __func__);

@@ -679,16 +679,13 @@ Value getblocktemplate(const Array& params, bool fHelp)
     result.push_back(Pair("curtime", (int64_t)pblock->nTime));
     result.push_back(Pair("bits", strprintf("%08x", pblock->nBits)));
     result.push_back(Pair("height", (int64_t)(pindexPrev->nHeight+1)));
-    Object aMasternode;
+
     if (pblock->payee != CScript()) {
         CTxDestination address1;
         ExtractDestination(pblock->payee, address1);
         CWavepaycoinAddress address2(address1);
         result.push_back(Pair("payee", address2.ToString().c_str()));
         result.push_back(Pair("payee_amount", (int64_t)pblock->vtx[0].vout[1].nValue));
-        aMasternode.push_back(Pair("payee", address2.ToString().c_str()));
-        aMasternode.push_back(Pair("script", HexStr(pblock->vtx[0].vout[1].scriptPubKey)));
-        aMasternode.push_back(Pair("amount", (int64_t)pblock->vtx[0].vout[1].nValue));
     }
     else
     {
@@ -696,7 +693,7 @@ Value getblocktemplate(const Array& params, bool fHelp)
         result.push_back(Pair("payee_amount", ""));
     }
     result.push_back(Pair("masternode_payments", pblock->nTime > 1529028000));
-result.push_back(Pair("enforce_masternode_payments", true));
+    result.push_back(Pair("enforce_masternode_payments", true));
     return result;
 }
 

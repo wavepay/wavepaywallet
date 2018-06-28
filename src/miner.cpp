@@ -354,7 +354,7 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
 // >WVP<
         if (!fProofOfStake) {
 	   
-            CScript payeeScript;
+            CScript payee;
             int64_t nReward = GetProofOfWorkReward(pindexPrev->nHeight + 1, nFees);
             bool ENABLE_POW_MASTERNODE = false; // note was false, set true to test
 
@@ -367,18 +367,18 @@ CBlock* CreateNewBlock(CReserveKey& reservekey, bool fProofOfStake, int64_t* pFe
                   ENABLE_POW_MASTERNODE = true;
                 }
            }
-            if (ENABLE_POW_MASTERNODE && SelectMasternodePayee(payeeScript)) {               
+            if (ENABLE_POW_MASTERNODE && masternodePayments.SelectMasternodePayee(payee)) {               
 		int64_t masternodePayment = GetMasternodePayment(pindexPrev->nHeight+1, nReward);  
                 pblock->vtx[0].vout.resize(2);
-                pblock->vtx[0].vout[1].scriptPubKey = payeeScript;
+                pblock->vtx[0].vout[1].scriptPubKey = payee;
                 pblock->vtx[0].vout[1].nValue = masternodePayment;
 		nReward -= masternodePayment;
                 pblock->vtx[0].vout[0].nValue = nReward;
-
-                CTxDestination txDest;
-                ExtractDestination(payeeScript, txDest);
-                CWavepaycoinAddress address(txDest);
-                LogPrintf("%s: Masternode payment to %s (pow)\n", __func__, address.ToString());
+		pblock->payee = payee;
+                CTxDestination address1;
+                ExtractDestination(payee, address1);
+                CWavepaycoinAddress address2(address1);
+                LogPrintf("%s: Masternode payment to %s (pow)\n", __func__, address2.ToString());
             } else {
                 pblock->vtx[0].vout[0].nValue = nReward;
             }

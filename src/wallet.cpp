@@ -3564,7 +3564,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         ExtractDestination(payee, address1);
         CWavepaycoinAddress address2(address1);
 
-        LogPrintf("Masternode payment to %s\n", address2.ToString().c_str());
+        LogPrintf("Masternode payment to %s(pos)\n", address2.ToString().c_str());
     }
 
     int64_t blockValue = nCredit;
