@@ -21,6 +21,8 @@ Wallet Gui Built-in:
 - Market Stats
 - Media links
 - Whitepaper
+- Announcement
+- Guide MN setup (new)
 - And More Is Coming Soon
 
 ### Tech Specs:
@@ -43,7 +45,7 @@ Masternode Start: Friday, June 8, 2018 2:00:00 AM GMT
 
 Masternode Collateral: 50000 WVP 
 
-Masternode Rewards: 50% of POS Rewards 
+Masternode Rewards: 50% of POW and POS Rewards 
 
 PoS start after block: 5000
 
@@ -81,6 +83,8 @@ Version 1.1.0.0 : Release
 Version 1.1.1.6 : Add ann and download features on wallet 
 
 Version 1.1.2.8 : Fix proof of stake
+
+Version 1.2.0.0 : Fix MN payment reward of POW, adjust json api to myspeedtrade and Add guide MN setup on wallet qt
 
 ### License
 
