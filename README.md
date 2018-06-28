@@ -63,7 +63,7 @@ PoS Reward:
  Reward: 1 WVP 
 
 Masternode Rewards: 
-50% of PoS Reward 
+50% of PoW and PoS Reward 
 
 ### Links
 
