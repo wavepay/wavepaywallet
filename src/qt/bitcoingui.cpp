@@ -17,6 +17,7 @@
 #include "optionsdialog.h"
 #include "aboutdialog.h"
 #include "whitepaperdialog.h"
+#include "guidedialog.h"
 #include "clientmodel.h"
 #include "walletmodel.h"
 #include "editaddressdialog.h"
@@ -94,6 +95,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     lockWalletAction(0),
     aboutQtAction(0),
     whitepaperAction(0),
+    guideAction(0),
     trayIcon(0),
     notificator(0),
     rpcConsole(0),
@@ -393,6 +395,8 @@ void BitcoinGUI::createActions()
     whitepaperAction = new QAction(QIcon(":/icons/whitepaper"), tr("&Whitepaper Wavepay"), this);
     whitepaperAction->setToolTip(tr("Show whitepaper Wavepay"));
     // whitepaperAction->setMenuRole(QAction::WhitepaperRole);
+    guideAction = new QAction(QIcon(":/icons/aboutwavepay"), tr("&Guide MN Setup"), this);
+    guideAction->setToolTip(tr("Show Guide Masternode Setup"));
     downloadAction = new QAction(QIcon(":/icons/export"), tr("&Check Latest update"), this);
     downloadAction->setToolTip(tr("Check latest update version wallet Wavepay"));
     aboutQtAction = new QAction(QIcon(":/icons/aboutqt"),tr("About &Qt"), this);
@@ -427,6 +431,7 @@ void BitcoinGUI::createActions()
     connect(telegramAction, SIGNAL(triggered()), this, SLOT(telegramClicked()));
     connect(discordAction, SIGNAL(triggered()), this, SLOT(discordClicked()));
     connect(whitepaperAction, SIGNAL(triggered()), this, SLOT(whitepaperClicked()));
+    connect(guideAction, SIGNAL(triggered()), this, SLOT(guideClicked()));
     connect(downloadAction, SIGNAL(triggered()), this, SLOT(downloadClicked()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(optionsClicked()));
@@ -480,6 +485,8 @@ void BitcoinGUI::createMenuBar()
 
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(openRPCConsoleAction);
+    help->addSeparator();
+    help->addAction(guideAction);
     help->addSeparator();
     help->addAction(aboutAction);
     help->addAction(aboutQtAction);
@@ -743,6 +750,12 @@ void BitcoinGUI::whitepaperClicked()
     WhitepaperDialog wdlg;
     wdlg.setModel(clientModel);
     wdlg.exec();
+}
+void BitcoinGUI::guideClicked()
+{
+    GuideDialog gdlg;
+    gdlg.setModel(clientModel);
+    gdlg.exec();
 }
 void BitcoinGUI::aboutClicked()
 {

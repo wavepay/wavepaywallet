@@ -288,8 +288,8 @@ else { }
     sslConfiguration.setProtocol(QSsl::TlsV1_2);
     QNetworkRequest req;
     req.setSslConfiguration(sslConfiguration);
-    req.setUrl(QUrl("https://api.crex24.com/CryptoExchangeService/BotPublic/ReturnTicker?request=[NamePairs=BTC_WVP]"));
-    //req.setUrl(QUrl("https://graviex.net/api/v2/tickers/andbtc"));
+    req.setUrl(QUrl("https://myspeedtrade.com//api/v2/tickers/wvpbtc.json"));
+ 
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QNetworkReply *reply = mgr_.get(req);
@@ -310,21 +310,21 @@ else { }
         QString strReply = (QString)reply->readAll();
         QJsonDocument jsdoc = QJsonDocument::fromJson(strReply.toUtf8());
 	QJsonObject jsonObject = jsdoc.object();
-	QJsonArray jsonArray = jsonObject["Tickers"].toArray();
-	 
-
-	foreach (const QJsonValue & value, jsonArray) {
-        QJsonObject obj = value.toObject();
-        double pricebtc = obj["Last"].toDouble();
-	Qpricebtc = QString::number(pricebtc, 'f', 8);
-	}
+	QJsonObject jsonValue = jsonObject["ticker"].toObject();
+	 double pricebtc = jsonValue.value("last").toDouble();
+	 Qpricebtc = QString::number(pricebtc, 'f', 8);
+	//foreach (const QJsonValue & value, jsonArray) {
+       //QJsonObject obj = value.toObject();
+       // double pricebtc = obj["last"].toDouble();
+	//Qpricebtc = QString::number(pricebtc, 'f', 8);
+	//}
 
 	if (Qpricebtc.isEmpty()) {
 	Qpricebtc = "0.00000500";
 	ui->assetlabel->setToolTip(tr("Not Listed in Exchange Yet, result: depend on masternode sell price"));
 	}
 	else {
-	ui->assetlabel->setToolTip(tr("result: on market Crex24"));
+	ui->assetlabel->setToolTip(tr("result: depend on market myspeedtrade.com"));
 
 	}
 
@@ -334,8 +334,9 @@ else { }
     }
     else {
         //failure 
+	QString strReply = (QString)reply->readAll();
 	Qpricebtc = "0.00000500";
-	ui->assetlabel->setToolTip(tr("Not Listed in Exchange Yet, result: depend on masternode sell price"));
+	ui->assetlabel->setToolTip(tr("Error Get Reply Exchange, result: depend on masternode sell price"));
         delete reply;
     }
 	

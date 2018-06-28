@@ -388,8 +388,8 @@ void MasternodeManager::updateNodeList()
     sslConfiguration.setProtocol(QSsl::TlsV1_2);
     QNetworkRequest req;
     req.setSslConfiguration(sslConfiguration);
-    req.setUrl(QUrl("https://api.crex24.com/CryptoExchangeService/BotPublic/ReturnTicker?request=[NamePairs=BTC_WVP]"));
-    //req.setUrl(QUrl("https://graviex.net/api/v2/tickers/andbtc"));
+    req.setUrl(QUrl("https://myspeedtrade.com//api/v2/tickers/wvpbtc.json"));
+    
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QNetworkReply *reply = mgr_.get(req);
@@ -410,12 +410,12 @@ void MasternodeManager::updateNodeList()
         QString strReply = (QString)reply->readAll();
         QJsonDocument jsdoc = QJsonDocument::fromJson(strReply.toUtf8());
 	QJsonObject jsonObject = jsdoc.object();
-	QJsonArray jsonArray = jsonObject["Tickers"].toArray();
+	QJsonArray jsonArray = jsonObject["ticker"].toArray();
 	 
 
 	foreach (const QJsonValue & value, jsonArray) {
         QJsonObject obj = value.toObject();
-        double pricebtc = obj["Last"].toDouble();
+        double pricebtc = obj["last"].toDouble();
 	QMnpricebtc = QString::number(pricebtc, 'f', 8);
 	}
 
@@ -425,7 +425,7 @@ void MasternodeManager::updateNodeList()
 	ui->countPricebtc->setToolTip(tr("Not Listed in Exchange Yet, result: depend on masternode sell price"));
 	}
 	else {
-	ui->countPricebtc->setToolTip(tr("result: on market Crex24"));
+	ui->countPricebtc->setToolTip(tr("result: depend on market myspeedtrade.com"));
 
 	}
 	
@@ -434,7 +434,7 @@ void MasternodeManager::updateNodeList()
     else {
         //failure 
 	QMnpricebtc = "0.00000500";
-	ui->countPricebtc->setToolTip(tr("Not Listed in Exchange Yet, Result: depend on masternode sell price"));
+	ui->countPricebtc->setToolTip(tr("Error Get Reply Exchange, Result: depend on masternode sell price"));
         delete reply;
     }
 

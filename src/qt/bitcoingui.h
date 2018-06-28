@@ -111,6 +111,7 @@ private:
     QAction *telegramAction;
     QAction *discordAction;
     QAction *whitepaperAction;
+    QAction *guideAction;
     QAction *downloadAction;
     QAction *receiveCoinsAction;
     QAction *optionsAction;
@@ -228,6 +229,8 @@ private slots:
     void discordClicked();
     /** Show whitepaper dialog */
     void whitepaperClicked();
+    /** Show guide dialog */
+    void guideClicked();
     /** Show download dialog */
     void downloadClicked();
 #ifndef Q_OS_MAC
