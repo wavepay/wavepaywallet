@@ -410,15 +410,9 @@ void MasternodeManager::updateNodeList()
         QString strReply = (QString)reply->readAll();
         QJsonDocument jsdoc = QJsonDocument::fromJson(strReply.toUtf8());
 	QJsonObject jsonObject = jsdoc.object();
-	QJsonArray jsonArray = jsonObject["ticker"].toArray();
-	 
-
-	foreach (const QJsonValue & value, jsonArray) {
-        QJsonObject obj = value.toObject();
-        double pricebtc = obj["last"].toDouble();
-	QMnpricebtc = QString::number(pricebtc, 'f', 8);
-	}
-
+	QJsonObject jsonValue = jsonObject["ticker"].toObject();
+	 double pricebtc = jsonValue["last"].toString().toDouble();
+	 QMnpricebtc = QString::number(pricebtc, 'f', 8);	 
 
 	if (QMnpricebtc.isEmpty()) {
 	QMnpricebtc = "0.00000500";

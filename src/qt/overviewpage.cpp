@@ -311,13 +311,9 @@ else { }
         QJsonDocument jsdoc = QJsonDocument::fromJson(strReply.toUtf8());
 	QJsonObject jsonObject = jsdoc.object();
 	QJsonObject jsonValue = jsonObject["ticker"].toObject();
-	 double pricebtc = jsonValue.value("last").toDouble();
+	 double pricebtc = jsonValue["last"].toString().toDouble();
 	 Qpricebtc = QString::number(pricebtc, 'f', 8);
-	//foreach (const QJsonValue & value, jsonArray) {
-       //QJsonObject obj = value.toObject();
-       // double pricebtc = obj["last"].toDouble();
-	//Qpricebtc = QString::number(pricebtc, 'f', 8);
-	//}
+
 
 	if (Qpricebtc.isEmpty()) {
 	Qpricebtc = "0.00000500";
